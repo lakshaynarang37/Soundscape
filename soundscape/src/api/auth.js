@@ -158,7 +158,7 @@ export async function getAccessToken() {
       }
       localStorage.setItem("token_expires", expiresAt.toString());
       return data.access_token;
-    } catch (e) {
+    } catch {
       logout();
       return null;
     }

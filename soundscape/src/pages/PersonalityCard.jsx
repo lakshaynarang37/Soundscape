@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTopTracks } from "../hooks/useTopTracks";
 import { useTopArtists } from "../hooks/useTopArtists";
@@ -250,15 +250,16 @@ export default function PersonalityCard() {
   const [searchParams] = useSearchParams();
   const shareParam = searchParams.get("share");
 
-  if (shareParam) {
-    try {
-      const data = JSON.parse(atob(shareParam));
-      return <SharedCardView data={data} />;
-    } catch {
-      // Invalid share param, render normal page
-    }
+  const sharedData = shareParam ? parseSharedCard(shareParam) : null;
+
+  if (sharedData) {
+    return <SharedCardView data={sharedData} />;
   }
 
+  return <PersonalityCardContent />;
+}
+
+function PersonalityCardContent() {
   const cardRef = useRef(null);
   const [exporting, setExporting] = useState(false);
   const [exported, setExported] = useState(false);
@@ -683,4 +684,12 @@ export default function PersonalityCard() {
       </p>
     </div>
   );
+}
+
+function parseSharedCard(shareParam) {
+  try {
+    return JSON.parse(atob(shareParam));
+  } catch {
+    return null;
+  }
 }

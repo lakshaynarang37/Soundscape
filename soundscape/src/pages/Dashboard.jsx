@@ -16,11 +16,12 @@ function getGreeting() {
 }
 
 function useProfile() {
-  const [profile, setProfile] = useState(null);
-  useEffect(() => {
+  const [profile, setProfile] = useState(() => {
     const cached = sessionStorage.getItem("sc_profile");
-    if (cached) {
-      setProfile(JSON.parse(cached));
+    return cached ? JSON.parse(cached) : null;
+  });
+  useEffect(() => {
+    if (profile) {
       return;
     }
     getMe()
@@ -29,7 +30,7 @@ function useProfile() {
         sessionStorage.setItem("sc_profile", JSON.stringify(data));
       })
       .catch(console.error);
-  }, []);
+  }, [profile]);
   return profile;
 }
 

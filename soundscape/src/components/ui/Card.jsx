@@ -1,12 +1,16 @@
-import React from "react";
+import { forwardRef } from "react";
 
 function joinClass(base, extra) {
   return extra ? `${base} ${extra}` : base;
 }
 
-export function Card({ className, children, ...props }) {
+export const Card = forwardRef(function Card(
+  { className, children, ...props },
+  ref,
+) {
   return (
     <div
+      ref={ref}
       data-slot="card"
       className={joinClass(
         "bg-white/[0.03] text-card-foreground flex flex-col gap-0 rounded-[28px] border border-transparent py-0 shadow-[0_24px_80px_rgba(0,0,0,0.32)] backdrop-blur-2xl",
@@ -17,7 +21,7 @@ export function Card({ className, children, ...props }) {
       {children}
     </div>
   );
-}
+});
 
 export function CardHeader({ className, ...props }) {
   return (

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/useAuth";
 import {
   Menu,
   X,
@@ -24,14 +24,8 @@ const NAV_ITEMS = [
   { path: "/card", label: "Personality Card", icon: Music },
 ];
 
-export default function Layout({ children }) {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const location = useLocation();
-  const { logout } = useAuth();
-
-  const toggleMobile = () => setMobileOpen(!mobileOpen);
-
-  const SidebarContent = () => (
+function SidebarContent({ onNavigate, onLogout }) {
+  return (
     <div className="flex flex-col h-full glass-panel-strong rounded-[28px] overflow-hidden">
       <div className="p-6 flex items-center gap-3 border-b border-white/6 bg-gradient-to-b from-white/8 to-transparent">
         <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-spotify to-emerald-300 flex items-center justify-center shadow-[0_12px_30px_rgba(29,185,84,0.25)]">
@@ -52,7 +46,7 @@ export default function Layout({ children }) {
           <NavLink
             key={path}
             to={path}
-            onClick={() => setMobileOpen(false)}
+            onClick={onNavigate}
             className={({ isActive }) =>
               `group flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-200 ${
                 isActive
@@ -86,7 +80,7 @@ export default function Layout({ children }) {
             </div>
           </div>
           <button
-            onClick={logout}
+            onClick={onLogout}
             className="p-1.5 text-text-muted hover:text-white transition-colors"
             title="Logout"
           >
@@ -96,6 +90,14 @@ export default function Layout({ children }) {
       </div>
     </div>
   );
+}
+
+export default function Layout({ children }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
+  const { logout } = useAuth();
+
+  const toggleMobile = () => setMobileOpen(!mobileOpen);
 
   return (
     <div className="relative flex h-screen bg-bg-base text-text-primary overflow-hidden">
@@ -136,7 +138,10 @@ export default function Layout({ children }) {
           mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
-        <SidebarContent />
+        <SidebarContent
+          onNavigate={() => setMobileOpen(false)}
+          onLogout={logout}
+        />
       </aside>
 
       {/* Main Content */}

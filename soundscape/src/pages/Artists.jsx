@@ -3,7 +3,6 @@ import { useTopArtists } from "../hooks/useTopArtists";
 import PageHeader from "../components/ui/PageHeader";
 import TimeRangeSelector from "../components/ui/TimeRangeSelector";
 import ArtistCard from "../components/TopList/ArtistCard";
-import SkeletonList from "../components/ui/SkeletonList";
 import ErrorState from "../components/ui/ErrorState";
 import EmptyState from "../components/ui/EmptyState";
 

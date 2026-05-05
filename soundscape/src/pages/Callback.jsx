@@ -1,17 +1,17 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { exchangeCodeForToken } from '../api/auth';
-import { useAuth } from '../context/AuthContext';
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { exchangeCodeForToken } from "../api/auth";
+import { useAuth } from "../context/useAuth";
 
 export default function Callback() {
-  const navigate    = useNavigate();
+  const navigate = useNavigate();
   const { setToken } = useAuth();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const code   = params.get('code');
-    const state  = params.get('state');
-    const error  = params.get('error');
+    const code = params.get("code");
+    const state = params.get("state");
+    const error = params.get("error");
 
     if (error) {
       navigate(`/?error=${error}`);
@@ -19,18 +19,18 @@ export default function Callback() {
     }
 
     if (!code) {
-      navigate('/?error=no_code');
+      navigate("/?error=no_code");
       return;
     }
 
     exchangeCodeForToken(code, state)
-      .then(token => {
+      .then((token) => {
         setToken(token);
-        navigate('/dashboard');
+        navigate("/dashboard");
       })
-      .catch(err => {
-        console.error('Auth callback error:', err);
-        navigate('/?error=token_failed');
+      .catch((err) => {
+        console.error("Auth callback error:", err);
+        navigate("/?error=token_failed");
       });
   }, [navigate, setToken]);
 
