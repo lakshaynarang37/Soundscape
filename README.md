@@ -5,7 +5,7 @@ Soundscappe is a Spotify listening insights app built with React, Vite, Tailwind
 ## Repository layout
 
 - `soundscape/` - main app
-- `claude/ai-logs/` - session logs and build notes
+- `ai-logs/ai-logs/` - session logs and build notes
 
 ## Local development
 
